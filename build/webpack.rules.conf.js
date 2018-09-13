@@ -1,4 +1,5 @@
 const extractTextPlugin = require('extract-text-webpack-plugin')
+const autoPreFixer = require('autoprefixer')
 
 module.exports = [
     {
@@ -17,10 +18,19 @@ module.exports = [
         // 此处为使用postcss分离css的写法
         use: extractTextPlugin.extract({
             fallback: "style-loader",
-            use: ["css-loader", "postcss-loader", "sass-loader"],
+            use: ["css-loader", 
+            {
+              loader: "postcss-loader",
+              options: {
+                ident: 'postcss',
+                plugins: [
+                  autoPreFixer
+                ]
+              }
+            },
+            "sass-loader"],
             // css中的基础路径
             // publicPath: "./"
-    
         })
     },
     {
