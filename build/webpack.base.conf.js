@@ -1,57 +1,60 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const rulesConfig = require('./webpack.rules.conf');
+const webpack = require('webpack');
+const extractTextPlugin = require('extract-text-webpack-plugin');
+const htmlWebpackPlugin = require('html-webpack-plugin');
+const glob = require("glob-all");
+// 消除冗余的css
+const purifyCssWebpack = require("purifycss-webpack");
+// 页面汇集
+const htmlArray = require('./webpack.html.conf')
+
+var getHtmlConfig = function (title, name, chunks) {
+  return {
+    template: path.resolve(__dirname, `../src/pages/${name}/index.html`),
+    filename: `${name}.html`,
+    // favicon: './favicon.ico',
+    title: title,
+    inject: true,
+    // hash: true, //开启hash  ?[hash]
+    chunks: chunks,//页面要引入的包
+    chunksSortMode: 'manual',//顺序
+    minify: process.env.NODE_ENV === "development" ? false : {
+      removeComments: true, //移除HTML中的注释
+      // collapseWhitespace: true, //折叠空白区域 也就是压缩代码
+      // removeAttributeQuotes: true, //去除属性引用
+    },
+  };
+};
 
 module.exports = {
   entry: {
-      // 多入口文件
-      index: './src/pages/index/index.js',
-      login: './src/pages/login/index.js'
+    index: path.resolve(__dirname, '../src/pages/index/index.js'),
+    login: path.resolve(__dirname, '../src/pages/login/index.js')
+  },
+  output: {
+    filename: './js/[name].js',
+    path: path.resolve(__dirname, '../dist')
   },
   module: {
-    rules: [
-      {
-        test: /\.(css|scss|sass)$/,
-        // 不分离的写法
-        // use: ["style-loader", "css-loader",sass-loader"]
-        // 使用postcss不分离的写法
-        // use: ["style-loader", "css-loader", sass-loader","postcss-loader"]
-        // 此处为分离css的写法
-        /*use: extractTextPlugin.extract({
-            fallback: "style-loader",
-            use: ["css-loader", "sass-loader"],
-            // css中的基础路径
-            publicPath: "../"
-        })*/
-        // 此处为使用postcss分离css的写法
-        use: extractTextPlugin.extract({
-            fallback: "style-loader",
-            use: ["css-loader", "sass-loader", "postcss-loader"],
-            // css中的基础路径
-            publicPath: "../"
-        })
-      },
-      {
-          test: /\.js$/,
-          use: ["babel-loader"],
-          // 不检查node_modules下的js文件
-          exclude: "/node_modules/"
-      }, {
-          test: /\.(png|jpg|gif)$/,
-          use: [{
-              // 需要下载file-loader和url-loader
-              loader: "url-loader",
-              options: {
-                  limit: 5 * 1024,//小于这个时将会已base64位图片打包处理
-                  // 图片文件输出的文件夹
-                  outputPath: "images"
-              }
-          }]
-      }
-    ],
-    plugins: [
-      new extractTextPlugin({
-          filename: 'css/[name].[hash:8].min.css',
-      }),
-    ]
-  }
-}
+    rules: rulesConfig
+  },
+  plugins: [
+    new extractTextPlugin({
+      filename: 'css/[name].css',
+    }),
+    new webpack.HotModuleReplacementPlugin()
+    // 多页面应用中该配置删除了有用的css样式
+    // new purifyCssWebpack({
+    //   paths: glob.sync([
+    //     path.join(__dirname, "../src/pages/*.html"),
+    //     path.join(__dirname, "../src/*.js")
+    //   ])
+    // }),
+  ]
+};
+
+//自动生成html模板
+htmlArray.forEach((element) => {
+  module.exports.plugins.push(new htmlWebpackPlugin(getHtmlConfig(element.title, element._html, element.chunks)));
+})
