@@ -4,11 +4,11 @@ module.exports = [
     {
         _html: 'index',
         title: '首页',
-        chunks: ['index']
+        chunks: ['index', 'vendor']
     },
     {
         _html: 'login',
         title: '登录',
-        chunks: ['login']
+        chunks: ['login', 'vendor']
     },
 ];

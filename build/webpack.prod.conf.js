@@ -8,6 +8,17 @@ const copyWebpackPlugin = require('copy-webpack-plugin')
 const optimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const config = merge(base,{
     mode: 'production',
+    optimization:{
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendor",
+                    chunks: "all"
+                }
+            }
+        }
+    },
     plugins: [
         new cleanWebpackPlugin(['dist'], {
             root: path.resolve(__dirname, '../'), //根目录
@@ -35,7 +46,7 @@ const config = merge(base,{
             cssProcessorOptions: {
               safe: true
             }
-        }),
+        })
     ]
 })
 
