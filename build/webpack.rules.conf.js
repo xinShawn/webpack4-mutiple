@@ -38,11 +38,11 @@ module.exports = [
         use: [{
             loader: 'babel-loader',
             options: {
-                presets: ['latest']
+                presets: ['env']
             }
         }],
         // 不检查node_modules下的js文件
-        exclude: "/node_modules/",
+        // exclude: "/node_modules/",
     },
     // CSS-in-JS
     {

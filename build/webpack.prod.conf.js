@@ -2,7 +2,7 @@ const path = require('path');
 const merge = require("webpack-merge");
 const base = require('./webpack.base.conf')
 const cleanWebpackPlugin = require('clean-webpack-plugin')
-const uglifyJSPlugin = require('uglifyjs-webpack-plugin')
+// const uglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const copyWebpackPlugin = require('copy-webpack-plugin')
 // 压缩css
 const optimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
@@ -28,15 +28,15 @@ const config = merge(base,{
             // Default: false - remove files
             dry: false,
         }),
-        new uglifyJSPlugin({
-            uglifyOptions: {
-                compress: {
-                    warnings: false,
-                    drop_debugger: false,
-                    drop_console: true
-                }
-            }
-        }),
+        // new uglifyJSPlugin({
+        //     uglifyOptions: {
+        //         compress: {
+        //             warnings: false,
+        //             drop_debugger: false,
+        //             drop_console: true
+        //         }
+        //     }
+        // }),
         new copyWebpackPlugin([{
             from: path.resolve(__dirname, "../src/assets"),
             to: './assets',

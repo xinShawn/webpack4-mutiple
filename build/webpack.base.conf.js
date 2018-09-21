@@ -9,10 +9,10 @@ const purifyCssWebpack = require("purifycss-webpack");
 // 页面汇集
 const htmlArray = require('./webpack.html.conf')
 
-var getHtmlConfig = function (title, name, chunks) {
+var getHtmlConfig = function (title, name, chunks, dir) {
   return {
     template: path.resolve(__dirname, `../src/pages/${name}/index.html`),
-    filename: `${name}.html`,
+    filename: `${dir || '.'}/${name}.html`,
     // favicon: './favicon.ico',
     title: title,
     inject: true,
@@ -56,5 +56,5 @@ module.exports = {
 
 //自动生成html模板
 htmlArray.forEach((element) => {
-  module.exports.plugins.push(new htmlWebpackPlugin(getHtmlConfig(element.title, element._html, element.chunks)));
+  module.exports.plugins.push(new htmlWebpackPlugin(getHtmlConfig(element.title, element._html, element.chunks, element.dir)));
 })
