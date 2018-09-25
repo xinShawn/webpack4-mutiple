@@ -5,12 +5,12 @@ module.exports = [
         _html: 'index',
         dir: 'common',
         title: '首页',
-        chunks: ['index', 'vendor']
+        chunks: ['vendor', 'index']
     },
     {
         _html: 'login',
         title: '登录',
         dir: 'other',
-        chunks: ['login', 'vendor']
+        chunks: ['vendor', 'login']
     },
 ];

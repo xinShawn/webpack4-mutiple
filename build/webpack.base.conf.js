@@ -3,9 +3,9 @@ const rulesConfig = require('./webpack.rules.conf');
 const webpack = require('webpack');
 const extractTextPlugin = require('extract-text-webpack-plugin');
 const htmlWebpackPlugin = require('html-webpack-plugin');
-const glob = require("glob-all");
+// const glob = require("glob-all");
 // 消除冗余的css
-const purifyCssWebpack = require("purifycss-webpack");
+// const purifyCssWebpack = require("purifycss-webpack");
 // 页面汇集
 const htmlArray = require('./webpack.html.conf')
 
@@ -36,6 +36,12 @@ module.exports = {
     filename: './js/[name].js',
     path: path.resolve(__dirname, '../dist')
   },
+  // resolve: {   // 此配置可以在import的时候直接使用缩写名
+  //   alias: {
+  //     xx: path.resolve(__dirname, '文件夹'),
+  //     xx$: path.resolve(__dirname, '具体文件.扩展名')
+  //   }
+  // },
   module: {
     rules: rulesConfig
   },
@@ -43,6 +49,9 @@ module.exports = {
     new extractTextPlugin({
       filename: 'css/[name].css',
     }),
+    // new webpack.ProvidePlugin({  // 可以使用这种方式来全局引入lodash或jquery
+    //   _: 'lodash'
+    // }),
     new webpack.HotModuleReplacementPlugin()
     // 多页面应用中该配置删除了有用的css样式
     // new purifyCssWebpack({
