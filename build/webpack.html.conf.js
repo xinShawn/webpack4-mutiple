@@ -1,16 +1,14 @@
-const path = require('path')
+// html自动生成插件的模板配置
 
 module.exports = [
     {
-        _html: 'index',
-        dir: 'common',
-        title: '首页',
-        chunks: ['vendor', 'index']
+        title: '首页', // 页面的title
+        _html: 'index', // 需要创建的名和源文件名
+        chunks: ['index', 'vendor'] // 页面需要引入的分块 chunk
     },
     {
-        _html: 'login',
         title: '登录',
-        dir: 'other',
-        chunks: ['vendor', 'login']
+        _html: 'login',
+        chunks: ['login', 'vendor']
     },
 ];

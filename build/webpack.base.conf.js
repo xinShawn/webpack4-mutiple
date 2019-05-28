@@ -8,8 +8,12 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 // const purifyCssWebpack = require("purifycss-webpack");
 // 页面汇集
 const htmlArray = require('./webpack.html.conf')
+// css分离
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = process.env.NODE_ENV !== 'production'
 
-var getHtmlConfig = function (title, name, chunks, dir) {
+// 循环html的主要配置数组,提取到具体配置中
+var getHtmlConfig = function (title, name, chunks) {
   return {
     template: path.resolve(__dirname, `../src/pages/${name}/index.html`),
     filename: `${dir || '.'}/${name}.html`,
@@ -34,7 +38,8 @@ module.exports = {
   },
   output: {
     filename: './js/[name].js',
-    path: path.resolve(__dirname, '../dist')
+    path: path.resolve(__dirname, '../dist'),
+    publicPath: '/' // 虚拟路径，将用于确定应该从哪里提供 bundle，'/'代表网站根目录。
   },
   // resolve: {   // 此配置可以在import的时候直接使用缩写名
   //   alias: {
@@ -48,11 +53,8 @@ module.exports = {
   plugins: [
     new extractTextPlugin({
       filename: 'css/[name].css',
-    }),
-    // new webpack.ProvidePlugin({  // 可以使用这种方式来全局引入lodash或jquery
-    //   _: 'lodash'
-    // }),
-    new webpack.HotModuleReplacementPlugin()
+    }), // 分离css的插件
+    new webpack.HotModuleReplacementPlugin(), // 热更新插件
     // 多页面应用中该配置删除了有用的css样式
     // new purifyCssWebpack({
     //   paths: glob.sync([
@@ -60,6 +62,12 @@ module.exports = {
     //     path.join(__dirname, "../src/*.js")
     //   ])
     // }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: devMode ? '[name].css' : '[name].[hash].css',
+      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+    })
   ]
 };
 
