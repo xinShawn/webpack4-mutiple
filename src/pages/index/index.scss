@@ -8,4 +8,18 @@ h1 {
     color: #00FF00;
     letter-spacing: 10px;
     border: 1px #000000 solid;
+    transform: scale(2);
+}
+
+// 下面的这些是多余的css，将会被剔除
+.nothing {
+    background: #000000;
+}
+
+.fine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }

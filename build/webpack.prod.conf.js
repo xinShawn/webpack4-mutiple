@@ -3,9 +3,14 @@ const merge = require("webpack-merge");
 const base = require('./webpack.base.conf')
 const cleanWebpackPlugin = require('clean-webpack-plugin')
 // const uglifyJSPlugin = require('uglifyjs-webpack-plugin')
+// 打包后原样拷贝文件夹
 const copyWebpackPlugin = require('copy-webpack-plugin')
 // 压缩css
 const optimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+// 消除冗余的css
+const purifyCssWebpack = require("purifycss-webpack");
+const glob = require("glob");
+
 const config = merge(base,{
     mode: 'production',
     optimization:{
@@ -46,7 +51,11 @@ const config = merge(base,{
             cssProcessorOptions: {
               safe: true
             }
-        })
+        }),
+        // 多页面应用中该配置删除了有用的css样式
+        new purifyCssWebpack({
+            paths: glob.sync(path.resolve(__dirname, "../src/pages/*/*.html"))
+        }),
     ]
 })
 

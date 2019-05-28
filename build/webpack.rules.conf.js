@@ -1,7 +1,8 @@
+// loader 加载规则：从后往前开始执行。
+
 // const extractTextPlugin = require('extract-text-webpack-plugin')
 const autoPreFixer = require('autoprefixer')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const devMode = process.env.NODE_ENV !== 'production'
 
 // test: 匹配处理文件的扩展名的正则表达式
 // use： loader名称
@@ -37,7 +38,7 @@ module.exports = [
 
         // 由于 webpack4.x 之后不提倡使用extractTextPlugin。所以改用mini-css-extract-plugin
         use: [
-            devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+            process.env.NODE_ENV === 'development' ? 'style-loader': MiniCssExtractPlugin.loader, // 开发环境下使用minicssextractplugin会导致热更新失效。
             'css-loader',
             {
                 loader: "postcss-loader",
@@ -53,24 +54,14 @@ module.exports = [
     },
     {
         test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: __dirname + 'node_modules',
-        include: __dirname + 'src',
-        options: {
-            presets: ['env']
+        exclude: /(node_modules|bower_components)/,
+        use: {
+            loader: 'babel-loader',
+            options: {
+            presets: ['@babel/preset-env']
+            }
         }
     },
-    // CSS-in-JS
-    {
-        test: /\.style.js$/,
-        use: [
-          'style-loader',
-          { loader: 'css-loader', options: { importLoaders: 2 } },
-          { loader: 'postcss-loader', options: { parser: 'postcss-js' } },
-          'babel-loader',
-          'scss-loader'
-        ]
-    }, 
     {
         test: /\.(png|jpg|gif)$/,
         use: [{
