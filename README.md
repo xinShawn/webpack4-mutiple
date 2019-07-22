@@ -37,13 +37,9 @@ src/pages/ 存放所有页面的 html、js、css文件。
 
 其中 src/pages/ 的格式如下：
 
-        ————— pageA(dir) ———— html、css、js文件
-
-        |
-pages ——————— pageB(dir) ———— html、css、js文件
-
-        |
-        ————— pageC(dir) ———— html、css、js文件
+1. pageA(dir) —— html、css、js文件
+2. pageB(dir) —— html、css、js文件
+3. pageC(dir) —— html、css、js文件
 
 ### 命令
 
