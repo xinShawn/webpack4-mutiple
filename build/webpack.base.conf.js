@@ -1,7 +1,6 @@
 const path = require('path');
 const rulesConfig = require('./webpack.rules.conf');
 const webpack = require('webpack');
-// const extractTextPlugin = require('extract-text-webpack-plugin');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 // 页面汇集
 const htmlArray = require('./webpack.html.conf')
@@ -47,9 +46,6 @@ module.exports = {
     rules: rulesConfig
   },
   plugins: [
-    // new extractTextPlugin({
-    //   filename: 'css/[name].css',
-    // }), // 分离css的插件
     new webpack.HotModuleReplacementPlugin(), // 热更新插件
     new MiniCssExtractPlugin({
       filename: 'css/[name].[hash].css', // 分离后的css名字和路径

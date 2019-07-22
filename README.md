@@ -10,7 +10,7 @@
 - sass-loader，scss-loader 编译sass语法。
 - post-css autoprefixer 自动补齐css hack前缀。
 - purify-css-Webpack 消除冗余的css代码。
-- webpack-dev-server 提供简单的web服务器，代码热更新。
+- webpack-dev-server 提供简单的web服务器，代码热更新。（由于配置了多入口，导致html、css无法热更新，需要重新手动刷新页面。但js的热更新没有影响。）
 - file-loader 解决图片路径问题, url-loader 转图片为 base64。
 - copy-webpack-plugin 拷贝静态文件。
 
@@ -28,19 +28,24 @@
 ### 开发目录说明
 
 开发时源码应放在 src/ 下。
+
 src/assets/ 存放静态文件，一般为图片资源、字体文件等。
+
 src/img/ 存放一些在css中会用到图片，因为考虑到url-loader会对图片进行转化处理，所以和assets分开。
+
 src/pages/ 存放所有页面的 html、js、css文件。
 
 其中 src/pages/ 的格式如下：
 
         ————— pageA(dir) ———— html、css、js文件
+
         |
 pages ——————— pageB(dir) ———— html、css、js文件
+
         |
         ————— pageC(dir) ———— html、css、js文件
 
-### 命令集
+### 命令
 
 ```
 npm run dev
